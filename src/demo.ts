@@ -1,4 +1,3 @@
-import "./demo.css";
 import animateEntries from "./entry-animation";
 
 const app = document.getElementById("app");
