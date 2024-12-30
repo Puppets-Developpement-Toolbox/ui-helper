@@ -36,14 +36,14 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install dependencies
         run: pnpm install
-      - name: Get deployment URL
-        id: deployment
-        uses: dorshinar/get-deployment-url@master
-        timeout-minutes: 5
+      - name: Get Deployment
+        uses: KowalskiTom/get-github-deployment@v1
+        id: getDeployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          env: staging
       - name: build
-        run: pnpm run build --base ${{ steps.deployment.outputs.deployment }}
+        run: pnpm run build --base ${{ steps.deployment.outputs.deployment_url }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
