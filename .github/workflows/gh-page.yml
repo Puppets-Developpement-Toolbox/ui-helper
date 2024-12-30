@@ -2,7 +2,7 @@ name: build gh page
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -15,7 +15,7 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: false
-  
+
 jobs:
   build:
     name: Build
@@ -36,13 +36,18 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install dependencies
         run: pnpm install
+      - name: Get deployment URL
+        id: deployment
+        uses: dorshinar/get-deployment-url@master
+        timeout-minutes: 5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: build
-        run: pnpm run build
+        run: pnpm run build --base ${{ steps.deployment.outputs.deployment }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-
 
   deploy:
     environment:
